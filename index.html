@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <style>
+        body {
+            overflow: hidden;
+            padding: 0;
+            margin: 0;
+        }
+
+        canvas {
+            background-color: black;
+        }
+    </style>
+</head>
+<body>
+    <canvas></canvas>
+
+    <script>
+        
+        const canvas = document.querySelector('canvas');
+        const ctx = canvas.getContext('2d');
+
+
+        const resize = () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resize();
+        window.addEventListener('resize', resize);
+
+
+
+        const Teams = {
+            RED: "red",
+            BLUE: "blue"
+        }
+
+        const dist = (obj1, obj2) => Math.sqrt(
+            (Math.pow(obj2.x - obj1.x, 2)) +
+            (Math.pow(obj2.y - obj1.y, 2))
+        );
+        const angleBetween = (p1, p2) => Math.atan2(p2.y - p1.y, p2.x - p1.x)// * 180 / Math.PI;
+
+
+        class Hero {
+            constructor(x = 0, y = 0, team) {
+                this.x = x;
+                this.y = y;
+                this.team = team;
+
+                this.target = undefined;
+                this.health = 100;
+                this.speed = 3;
+                this.rotation = 0;
+
+                gameObject.push(this);
+            }
+            update() {
+                if (!this.target)
+                    init();
+                this.rotation = angleBetween(this, this.target);
+                this.x += Math.cos(this.rotation) * this.speed;
+                this.y += Math.sin(this.rotation) * this.speed;
+
+                // if (dist(this, this.target) , 1) {
+                //     this.health --;
+                //     this.target.health -= 2;
+                // }
+                
+                if (this.health <= 0) {
+                    teams[this.team].splice(teams[this.team].indexOf(this), 1);
+                    gameObject.splice(gameObject.indexOf(this), 1);
+                }
+
+            }
+            draw() {
+                ctx.fillStyle = this.team;
+                ctx.fillRect(this.x, this.y, Hero.size, Hero.size);
+            }
+
+            init() {
+                const enemyTeam = this.team === Teams.RED ? Teams.BLUE : Teams.RED;
+                let closestEnemy = {
+                    dist: dist(this, teams[enemyTeam][0]),
+                    enemy: teams[enemyTeam][0]
+                }
+                teams[enemyTeam].forEach(el => {
+                    if (dist(this, el) < closestEnemy.dist) {
+                        closestEnemy = {
+                            dist: dist(this, el),
+                            enemy: el
+                        }
+                    }
+                })
+
+                this.target = closestEnemy.enemy;
+            }
+        }
+        Hero.size = 10;
+
+
+        const drawable = [];
+        const updatable = [];
+
+        const gameObject = [];
+        
+        const teams = {
+            "red" : [],
+            "blue" : [],
+        }
+
+
+
+        for (let i = 0; i < 1000; i ++) {
+            teams["red"].push(
+                new Hero(
+                    Math.floor(Math.random() * canvas.width/2),
+                    Math.floor(Math.random() * canvas.height),
+                    Teams.RED
+                )  
+            );
+            teams["blue"].push(
+                new Hero(
+                    canvas.width/2 + Math.floor(Math.random() * canvas.width/2),
+                    Math.floor(Math.random() * canvas.height),
+                    Teams.BLUE
+                )
+            );
+        }
+
+        gameObject.forEach(el => el.init());
+
+
+
+
+        const update = () => {
+
+
+
+            gameObject.forEach(el => el.update());
+        }
+        const render = () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+
+            gameObject.forEach(el => el.draw());
+        }
+
+
+
+        setInterval(() => {
+            update();
+            render();
+        }, 1000/30);
+
+
+
+    
+    </script>
+</body>
+</html>
