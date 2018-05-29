@@ -1,10 +1,10 @@
-import { Hero } from "./hero.js";
+import { Hero } from "./units/hero.js";
 import { canvas, ctx } from './state.js'; 
 import { Teams, gameObject, teams } from './state.js';
 
-
-
 import FPS from './fps.js';
+import { Archer } from "./units/archer.js";
+import { Tank } from "./units/tank.js";
 
 window['teams'] = teams;
 
@@ -17,28 +17,52 @@ const resize = () => {
 resize();
 window.addEventListener('resize', resize);
 
+
+new Archer();
+
+
 //meaning 10000 units
 //5000 on each side
-for (let i = 0; i < 3000; i ++) {
+for (let i = 0; i < 250; i ++) {
     const redHero = new Hero(
-        Math.floor(Math.random() * canvas.width/2),
+        canvas.width/4 + Math.floor(Math.random() * canvas.width/4),
+        Math.floor(Math.random() * canvas.height),
+        Teams.RED
+    );
+    const redArcher = new Archer(
+        Math.floor(Math.random() * canvas.width/4),
         Math.floor(Math.random() * canvas.height),
         Teams.RED
     );
 
     const blueHero = new Hero(
-        canvas.width/2 + Math.floor(Math.random() * canvas.width/2),
+        canvas.width/2 + Math.floor(Math.random() * canvas.width/4),
+        Math.floor(Math.random() * canvas.height),
+        Teams.BLUE
+    )
+    const blueArcher = new Archer(
+        canvas.width/2 + canvas.width/4 + Math.floor(Math.random() * canvas.width/4),
         Math.floor(Math.random() * canvas.height),
         Teams.BLUE
     )
 
-    redHero.push(gameObject);
-    redHero.push(teams['red']);
+    redHero.push(gameObject, teams['red']);
+    redArcher.push(gameObject, teams['red']);
 
-    blueHero.push(gameObject);
-    blueHero.push(teams['blue']);
+    blueHero.push(gameObject, teams['blue']);
+    blueArcher.push(gameObject, teams['blue']);
 }
 
+
+for (let i = 0; i < 25; i ++) {
+    const redTank = new Tank(
+        canvas.width/4 + Math.floor(Math.random() * canvas.width/4),
+        Math.floor(Math.random() * canvas.height),
+        Teams.RED
+    );
+    redTank.push(gameObject, teams['red']);
+
+}
 // gameObject.forEach(el => el.init());
 
 
