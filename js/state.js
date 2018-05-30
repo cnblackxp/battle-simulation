@@ -9,9 +9,9 @@ export const Teams = {
 export const drawable = [];
 export const updatable = [];
 
-export const gameObject = [];
+export let gameObject = [];
 
-export const teams = {
+export let teams = {
     "red" : [],
     "blue" : [],
 }

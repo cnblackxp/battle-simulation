@@ -5,10 +5,72 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Epic Battle Simulator</title>
+
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="bootstrap/css/fontawesome-all.min.css">
+
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <div class="modal" tabindex="-1" role="dialog" id="editModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h5 class="text-primary">Blue</h5>
+                    <div class="row">
+                        <div class="col-md-4 form-group">
+                            <label for="">Heros</label>
+                            <input type="number" id="blue-heros" class="form-control" value="100">
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label for="">Archers</label>
+                            <input type="number" id="blue-archers" class="form-control" value="100">
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label for="">Tanks</label>
+                            <input type="number" id="blue-tanks" class="form-control" value="100">
+                        </div>
+                    </div>
+                    <h5 class="text-danger">Red</h5>
+                    <div class="row">
+                        <div class="col-md-4 form-group">
+                            <label for="">Heros</label>
+                            <input type="number" id="red-heros" class="form-control" value="100">
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label for="">Archers</label>
+                            <input type="number" id="red-archers" class="form-control" value="100">
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label for="">Tanks</label>
+                            <input type="number" id="red-tanks" class="form-control" value="100">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="editRomeTotalWar">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <canvas></canvas>
+    <div class="content">
+        <button class="btn btn-success" data-toggle="modal" data-target="#editModal">Edit Game</button>
+    </div>
+    
+    <script src="bootstrap/js/jquery-3.3.1.min.js"></script>
+    <script src="bootstrap/js/popper.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    
     <script src="js/main.js" type="module"></script>
 </body>
 </html>

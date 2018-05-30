@@ -6,4 +6,13 @@ body {
 
 canvas {
     background-color: black;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: -123;
+}
+
+.content {
+    margin: 20px;
+    padding-left: 200px;
 }
