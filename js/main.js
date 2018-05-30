@@ -51,6 +51,11 @@ for (let i = 0; i < 250; i ++) {
         Math.floor(Math.random() * canvas.height),
         Teams.BLUE
     ).push(gameObject, teams['blue']);
+    new Hero(
+        canvas.width/2 + Math.floor(Math.random() * canvas.width/4),
+        Math.floor(Math.random() * canvas.height),
+        Teams.BLUE
+    ).push(gameObject, teams['blue']);
     new Archer(
         canvas.width/2 + canvas.width/4 + Math.floor(Math.random() * canvas.width/4),
         Math.floor(Math.random() * canvas.height),
@@ -139,7 +144,7 @@ const render = () => {
 
     if (teams['red'].length === 0) {
         ctx.font = '50px Arial';
-        ctx.lineWidth = 1;
+        ctx.lineWidth = 3;
         ctx.fillStyle = 'blue';
         ctx.strokeStyle = 'white';
         ctx.strokeText('BLUE WON', canvas.width/2, canvas.height/2);
@@ -148,7 +153,7 @@ const render = () => {
 
     if (teams['blue'].length === 0) {
         ctx.font = '50px Arial';
-        ctx.lineWidth = 1;
+        ctx.lineWidth = 3;
         ctx.fillStyle = 'red';
         ctx.strokeStyle = 'white';
         ctx.strokeText('RED WON', canvas.width/2, canvas.height/2);
