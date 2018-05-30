@@ -5,6 +5,7 @@ import { Teams, gameObject, teams } from './state.js';
 import FPS from './fps.js';
 import { Archer } from "./units/archer.js";
 import { Tank } from "./units/tank.js";
+import { Arrow } from "./arrow.js";
 
 window['teams'] = teams;
 
@@ -24,33 +25,62 @@ new Archer();
 //meaning 10000 units
 //5000 on each side
 for (let i = 0; i < 250; i ++) {
-    const redHero = new Hero(
+    //RED
+    //TEAM
+    new Hero(
         canvas.width/4 + Math.floor(Math.random() * canvas.width/4),
         Math.floor(Math.random() * canvas.height),
         Teams.RED
-    );
+    ).push(gameObject, teams['red']);
+    new Hero(
+        canvas.width/4 + Math.floor(Math.random() * canvas.width/4),
+        Math.floor(Math.random() * canvas.height),
+        Teams.RED
+    ).push(gameObject, teams['red']);
     const redArcher = new Archer(
         Math.floor(Math.random() * canvas.width/4),
         Math.floor(Math.random() * canvas.height),
         Teams.RED
-    );
+    ).push(gameObject, teams['red']);
 
-    const blueHero = new Hero(
+
+    //BLUE
+    //TEAM
+    new Hero(
         canvas.width/2 + Math.floor(Math.random() * canvas.width/4),
         Math.floor(Math.random() * canvas.height),
         Teams.BLUE
-    )
-    const blueArcher = new Archer(
+    ).push(gameObject, teams['blue']);
+    new Archer(
         canvas.width/2 + canvas.width/4 + Math.floor(Math.random() * canvas.width/4),
         Math.floor(Math.random() * canvas.height),
         Teams.BLUE
-    )
-
-    redHero.push(gameObject, teams['red']);
-    redArcher.push(gameObject, teams['red']);
-
-    blueHero.push(gameObject, teams['blue']);
-    blueArcher.push(gameObject, teams['blue']);
+    ).push(gameObject, teams['blue']);
+    new Archer(
+        canvas.width/2 + canvas.width/4 + Math.floor(Math.random() * canvas.width/4),
+        Math.floor(Math.random() * canvas.height),
+        Teams.BLUE
+    ).push(gameObject, teams['blue']);
+    new Archer(
+        canvas.width/2 + canvas.width/4 + Math.floor(Math.random() * canvas.width/4),
+        Math.floor(Math.random() * canvas.height),
+        Teams.BLUE
+    ).push(gameObject, teams['blue']);
+    new Archer(
+        canvas.width/2 + canvas.width/4 + Math.floor(Math.random() * canvas.width/4),
+        Math.floor(Math.random() * canvas.height),
+        Teams.BLUE
+    ).push(gameObject, teams['blue']);
+    new Archer(
+        canvas.width/2 + canvas.width/4 + Math.floor(Math.random() * canvas.width/4),
+        Math.floor(Math.random() * canvas.height),
+        Teams.BLUE
+    ).push(gameObject, teams['blue']);
+    new Archer(
+        canvas.width/2 + canvas.width/4 + Math.floor(Math.random() * canvas.width/4),
+        Math.floor(Math.random() * canvas.height),
+        Teams.BLUE
+    ).push(gameObject, teams['blue']);
 }
 
 
@@ -81,11 +111,13 @@ const render = () => {
     gameObject.forEach(el => el.draw());
 
     ctx.fillStyle = 'black';
-    ctx.fillRect(0,0, 150, 100);
+    ctx.fillRect(0,0, 150, 150);
        
     ctx.strokeStyle = 'white';
-    ctx.strokeRect(0,0, 150, 100);
-
+    ctx.strokeRect(0,0, 150, 150);
+    
+    
+    ctx.font = '16px Arial'; 
     ctx.fillStyle = 'white';
     ctx.fillText('FPS: ' + FPS.rate(), 12, 20);
     if (teams['red'].length > teams['blue'].length) {
@@ -101,11 +133,31 @@ const render = () => {
     }
     ctx.fillStyle = 'white';
     ctx.fillText('Total: ' + (teams['red'].length+teams['blue'].length), 12, 80);
+    ctx.fillStyle = 'white';
+    ctx.fillText('Arrows: ' + (Arrow.count), 12, 100);
+
+
+    if (teams['red'].length === 0) {
+        ctx.font = '50px Arial';
+        ctx.lineWidth = 1;
+        ctx.fillStyle = 'blue';
+        ctx.strokeStyle = 'white';
+        ctx.strokeText('BLUE WON', canvas.width/2, canvas.height/2);
+        ctx.fillText('BLUE WON', canvas.width/2, canvas.height/2);
+    }
+
+    if (teams['blue'].length === 0) {
+        ctx.font = '50px Arial';
+        ctx.lineWidth = 1;
+        ctx.fillStyle = 'red';
+        ctx.strokeStyle = 'white';
+        ctx.strokeText('RED WON', canvas.width/2, canvas.height/2);
+        ctx.fillText('RED WON', canvas.width/2, canvas.height/2);
+    }
     
 }
 
 
-ctx.font = '16px Arial'; 
 setInterval(() => {
     update();
     render();

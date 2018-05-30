@@ -1,6 +1,7 @@
 import { Hero } from './hero.js';
-import { ctx } from '../state.js';
+import { ctx, gameObject } from '../state.js';
 import { Unit } from './unit.js';
+import { Arrow } from '../arrow.js';
 
 export class Archer extends Hero {
     constructor(x = 0, y = 0, team) {
@@ -10,7 +11,21 @@ export class Archer extends Hero {
         this.health = 100;
         this.speed = 0.5;
         
+        this.fr = 0;
+        this.frameRate = 15;
+
+        this.setStateBehaviour('attack', () => {
+            this.fr ++;
+            if (this.fr >= this.frameRate) {
+                this.fr = 0;
+
+                new Arrow(
+                    this.x, this.y, this.target, this.damage
+                ).push(gameObject);
+            }
+        })
         this.alterStateCondition('attack', () => this.attackCondition(200));
+
 
     }
     draw() {

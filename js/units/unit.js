@@ -67,28 +67,6 @@ export class Unit extends StateMachine {
         return this.target && dist(this, this.target) < _dist;
     }
     //------------------state functions
-
-
-    push(arr) {
-        if (arguments.length > 1) {
-            for (let i = 0; i < arguments.length; i ++) {
-                arguments[i].push(this);
-                this.arrayRefrences.push(arguments[i]);
-            }
-            // console.log(arguments[0]);
-            // console.log(arguments[1]);
-            // arguments.forEach(el => {
-            //     el.push(this);
-            //     this.arrayRefrences.push(el);            
-            // })
-        } else {
-            arr.push(this);
-            this.arrayRefrences.push(arr);            
-        }
-    }
-    kill() {
-        this.arrayRefrences.forEach(el => el.splice(el.indexOf(this), 1));
-    }
     update() {
         super.update();
         if (this.health <= 0) {

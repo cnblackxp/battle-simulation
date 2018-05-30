@@ -1,3 +1,5 @@
+import { GameObject } from "./game-object.js";
+
 Array.prototype.indexOfObject = function (key, value) {
     for (let i = 0; i < this.length; i ++) {
         if (this[i][key] === value) 
@@ -6,8 +8,9 @@ Array.prototype.indexOfObject = function (key, value) {
     return -1;
 }
 
-export class StateMachine {
+export class StateMachine extends GameObject {
     constructor() {
+        super();
         this.states = {};
         this.state = undefined;
         this.statesToChangeTo = [];
@@ -99,6 +102,7 @@ export class StateMachine {
                 this.states[state].statesToChangeTo[index].condition = condition;
         })
     }
+    
     // appendStateCondition(stateToChangeTo, stateCurrent){
     //     stateCurrent.forEach(el =>
     //         this.states[el].statesToChangeTo.push({
