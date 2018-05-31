@@ -48,7 +48,7 @@ editRomeTotalWar.onclick = () => {
 // gameObject.forEach(el => el.init());
 
 
-RomeTotalWar.init({
+const defaultGame = {
     blue: {
         heros: 100,
         archers: 100,
@@ -59,7 +59,17 @@ RomeTotalWar.init({
         archers: 100,
         tanks: 25,
     }
-});
+}
+
+RomeTotalWar.init(defaultGame);
+// RomeTotalWar.init({
+//     blue: {
+//         heros: 10
+//     },
+//     red: {
+//         halberdiers: 10
+//     }
+// });
 
 
 
@@ -104,7 +114,7 @@ const render = () => {
 
     if (teams['red'].length === 0) {
         ctx.font = '50px Arial';
-        ctx.lineWidth = 3;
+        ctx.lineWidth = '3px';
         ctx.fillStyle = 'blue';
         ctx.strokeStyle = 'white';
         ctx.strokeText('BLUE WON', canvas.width/2, canvas.height/2);
@@ -113,7 +123,7 @@ const render = () => {
 
     if (teams['blue'].length === 0) {
         ctx.font = '50px Arial';
-        ctx.lineWidth = 3;
+        ctx.lineWidth = '3px';
         ctx.fillStyle = 'red';
         ctx.strokeStyle = 'white';
         ctx.strokeText('RED WON', canvas.width/2, canvas.height/2);

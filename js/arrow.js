@@ -14,7 +14,10 @@ export class Arrow extends GameObject {
         // this.health = 100;
         this.damage = damage;
         this.speed = 10;
-        this.rotation = 0;
+        this.length = 5;
+        this.rotation = angleBetween(this, this.target);
+
+        this.health = 25;
 
         Arrow.count++;
     }
@@ -24,11 +27,21 @@ export class Arrow extends GameObject {
     }
 
     draw() {
-        gameData.ctx.fillStyle = 'white';
-        gameData.ctx.fillRect(this.x, this.y, Arrow.size, Arrow.size);
+        // gameData.ctx.fillStyle = 'white';
+        // gameData.ctx.fillRect(this.x, this.y, Arrow.size, Arrow.size);
+
+        gameData.ctx.lineWidth = '1px';
+        gameData.ctx.strokeStyle = 'white';
+        gameData.ctx.beginPath();
+        gameData.ctx.moveTo(this.x, this.y);
+        gameData.ctx.lineTo(
+            this.x - Math.cos(this.rotation) * this.speed, 
+            this.y - Math.sin(this.rotation) * this.speed
+        );
+        gameData.ctx.stroke();
     }
     update() {
-        this.rotation = angleBetween(this, this.target);
+        // this.rotation = angleBetween(this, this.target);
         this.x += Math.cos(this.rotation) * this.speed;
         this.y += Math.sin(this.rotation) * this.speed;
 
@@ -36,6 +49,9 @@ export class Arrow extends GameObject {
             this.target.health -= this.damage;
             this.kill();
         }
+        this.health --;
+        if (this.health <= 0)
+            this.kill();
     }
 }
 Arrow.size = 3;

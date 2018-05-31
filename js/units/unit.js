@@ -1,7 +1,7 @@
 import { dist, angleBetween } from '../utils.js';
 import { canvas, ctx, Teams, gameObject, teams } from '../state.js';
 
-import {StateMachine} from '../state-machine.js';
+import { StateMachine } from '../state-machine.js';
 
 
 
@@ -20,10 +20,10 @@ export class Unit extends StateMachine {
 
         this.size = Unit.size;
 
+        this.damageBouns = [];
+
 
         this.setState('idle', () => {
-            // console.log(this);
-            // console.log('idle');
             this.findTarget();
         });
         this.setState('move', () => {
@@ -40,7 +40,29 @@ export class Unit extends StateMachine {
 
         this.arrayRefrences = [];
     }
-    //state functions
+    //------------------
+    //------------------
+    //------------------
+    //------------------state functions
+    findTarget() {
+        const enemyTeam = this.team === Teams.RED ? Teams.BLUE : Teams.RED;
+        if (teams[enemyTeam].length <= 0)
+            return this.target = undefined;
+        let closestEnemy = {
+            dist: dist(this, teams[enemyTeam][0]),
+            enemy: teams[enemyTeam][0]
+        }
+        teams[enemyTeam].forEach(el => {
+            if (dist(this, el) < closestEnemy.dist && el.health > 0) {
+                closestEnemy = {
+                    dist: dist(this, el),
+                    enemy: el
+                }
+            }
+        })
+
+        this.target = closestEnemy.enemy;
+    }
     move() {
         this.rotation = angleBetween(this, this.target);
         this.x += Math.cos(this.rotation) * this.speed;
@@ -61,12 +83,23 @@ export class Unit extends StateMachine {
     }
     attack() {
         this.target.health -= this.damage;
+
+        if (this.damageBouns.length > 0) {
+            this.damageBouns.forEach(el => {
+                if (this.target instanceof el.type) {
+                    this.target.health -= el.damage;
+                }
+            })
+        }
     }
 
     attackCondition(_dist = 14) {
         return this.target && dist(this, this.target) < _dist;
     }
     //------------------state functions
+    //------------------
+    //------------------
+    //------------------
     update() {
         super.update();
         if (this.health <= 0) {
@@ -76,7 +109,6 @@ export class Unit extends StateMachine {
     }
     draw() {
         ctx.fillStyle = this.team;
-        // ctx.fillRect(this.x, this.y, Unit.size * this.damage/2, Unit.size * this.damage/2);
         ctx.fillRect(this.x, this.y, this.size, this.size);
     }
 
@@ -84,27 +116,6 @@ export class Unit extends StateMachine {
         ctx.strokeStyle = color;
         ctx.lineWidth = lineWidth;
         ctx.strokeRect(this.x, this.y, this.size, this.size);
-    }
-
-
-    findTarget() {
-        const enemyTeam = this.team === Teams.RED ? Teams.BLUE : Teams.RED;
-        if (teams[enemyTeam].length <= 0)
-            return this.target = undefined;
-        let closestEnemy = {
-            dist: dist(this, teams[enemyTeam][0]),
-            enemy: teams[enemyTeam][0]
-        }
-        teams[enemyTeam].forEach(el => {
-            if (dist(this, el) < closestEnemy.dist && el.health > 0) {
-                closestEnemy = {
-                    dist: dist(this, el),
-                    enemy: el
-                }
-            }
-        })
-
-        this.target = closestEnemy.enemy;
     }
 }
 Unit.size = 7;
