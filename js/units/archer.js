@@ -7,7 +7,7 @@ export class Archer extends Hero {
     constructor(x = 0, y = 0, team) {
         super(x, y, team);
 
-        this.damage = 1;
+        this.damage = 2;
         this.health = 25;
         this.speed = 0.5;
         

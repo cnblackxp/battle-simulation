@@ -16,3 +16,15 @@ canvas {
     margin: 20px;
     padding-left: 200px;
 }
+
+.haz-main-menu {
+    margin-top: 4rem;
+    width: 700px;
+    height: 500px;
+    color: white;
+    background-color: rgba(100, 100, 200, 0.5)
+}
+
+.haz-buttons {
+    padding: 50px;
+}
