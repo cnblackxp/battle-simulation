@@ -22,26 +22,26 @@ resize();
 window.addEventListener('resize', resize);
 
 editRomeTotalWar.onclick = () => {
-    const unitSize = {
-        blue: {
-            heros: 100,
-            archers: 100,
-            tanks: 25,
-        },
-        red: {
-            heros: 100,
-            archers: 100,
-            tanks: 25,
-        }
-    };
+    // const unitSize = {
+    //     blue: {
+    //         heros: 100,
+    //         archers: 100,
+    //         tanks: 25,
+    //     },
+    //     red: {
+    //         heros: 100,
+    //         archers: 100,
+    //         tanks: 25,
+    //     }
+    // };
 
-    for (let team in unitSize) {
-        for (let type in unitSize[team]) {
-            unitSize[team][type] = parseInt(document.querySelector(`#${team}-${type}`).value);
+    for (let team in defaultGame) {
+        for (let type in defaultGame[team]) {
+            defaultGame[team][type] = parseInt(document.querySelector(`#${team}-${type}`).value);
         }
     }
 
-    RomeTotalWar.init(unitSize);    
+    RomeTotalWar.init(defaultGame);    
 }
 
 
