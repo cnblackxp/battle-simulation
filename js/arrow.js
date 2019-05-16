@@ -8,7 +8,7 @@ export class Arrow extends GameObject {
         super();
         this.x = x;
         this.y = y;
-        // this.team = team;
+        this.team = team;
 
         this.target = target;
         // this.health = 100;
@@ -17,7 +17,7 @@ export class Arrow extends GameObject {
         this.length = 5;
         this.rotation = angleBetween(this, this.target);
 
-        this.health = 25;
+        this.health = 200;
 
         Arrow.count++;
     }
@@ -31,7 +31,7 @@ export class Arrow extends GameObject {
         // gameData.ctx.fillRect(this.x, this.y, Arrow.size, Arrow.size);
 
         gameData.ctx.lineWidth = '1px';
-        gameData.ctx.strokeStyle = 'white';
+        gameData.ctx.strokeStyle = this.team;
         gameData.ctx.beginPath();
         gameData.ctx.moveTo(this.x, this.y);
         gameData.ctx.lineTo(
@@ -42,12 +42,14 @@ export class Arrow extends GameObject {
     }
     update() {
         // this.rotation = angleBetween(this, this.target);
-        this.x += Math.cos(this.rotation) * this.speed;
-        this.y += Math.sin(this.rotation) * this.speed;
-
-        if (dist(this, this.target) < Arrow.size/2 + this.target.size/2) {
-            this.target.health -= this.damage;
-            this.kill();
+        if (this.health >= 175) {
+            this.x += Math.cos(this.rotation) * this.speed;
+            this.y += Math.sin(this.rotation) * this.speed;
+    
+            if (dist(this, this.target) < Arrow.size/2 + this.target.size/2) {
+                this.target.health -= this.damage;
+                this.kill();
+            }
         }
         this.health --;
         if (this.health <= 0)

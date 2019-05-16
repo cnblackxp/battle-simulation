@@ -20,7 +20,7 @@ export class Archer extends Hero {
                 this.fr = 0;
 
                 new Arrow(
-                    this.x, this.y, this.target, this.damage
+                    this.x, this.y, this.target, this.damage, team
                 ).push(gameObject);
             }
         })
