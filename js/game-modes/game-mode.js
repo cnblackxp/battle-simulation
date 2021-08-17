@@ -7,8 +7,6 @@ import { clearArray } from "../utils.js";
 import statistics from "../statstics.js";
 import RomeTotalWar from "./rome-total-war.js";
 
-console.log('game-mode');
-
 export const Quarter = {
     first: 1,
     second: 2,
@@ -97,10 +95,14 @@ export default class GameMode {
         // console.log(this);
     }
     update() {
-        gameObject.forEach(el => el.update());    
+        for (let i = 0; i < gameObject.length; i ++) {
+            gameObject[i].update();
+        }
     }
     draw() {
-        gameObject.forEach(el => el.draw());
+        for (let i = 0; i < gameObject.length; i ++) {
+            gameObject[i].draw();
+        }
         statistics();
     }
 }

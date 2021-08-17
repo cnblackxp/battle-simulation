@@ -82,25 +82,27 @@ export class StateMachine extends GameObject {
 
     }
     setStateCondition(stateToChangeTo, condition, stateCurrent) {
-        if (stateCurrent)        
-            stateCurrent.forEach(el =>
-                this.states[el].statesToChangeTo.push({
+        if (stateCurrent) {
+            for (let i = 0; i < stateCurrent.length; i ++) {
+                this.states[stateCurrent[i]].statesToChangeTo.push({
                     state: stateToChangeTo,
                     condition: condition
                 })
-            );
-        else
+            }
+        } else {
             this.statesToChangeTo.push({
                 state: stateToChangeTo,
                 condition
-            })
+            });
+        }
     }
     alterStateCondition(stateToChangeTo, condition) {
-        this.getStates().forEach(state => {
-            const index = this.states[state].statesToChangeTo.indexOfObject('state', stateToChangeTo);
+        for (let i = 0; i < this.getStates().length; i ++) {
+            const statesToChangeTo = this.states[this.getStates()[i]].statesToChangeTo;
+            const index = statesToChangeTo.indexOfObject('state', stateToChangeTo);
             if (index !== -1)
-                this.states[state].statesToChangeTo[index].condition = condition;
-        })
+                statesToChangeTo[index].condition = condition;
+        }
     }
     
     // appendStateCondition(stateToChangeTo, stateCurrent){
@@ -124,22 +126,23 @@ export class StateMachine extends GameObject {
 
     update() {
         if (this.state) {
-            this.states[this.state].behaviour();
-            this.states[this.state].statesToChangeTo.forEach(el => {
+            const currentState = this.states[this.state];
+            currentState.behaviour();
+            for (let i = 0; i < currentState.statesToChangeTo.length; i++) {
+                const el = currentState.statesToChangeTo[i];
                 if (el.condition()) {
                     // console.log(`unit changed from ${this.state} to ${el.state}`);
                     this.state = el.state;
                 }
-            });
+            }
         }
 
-        this.statesToChangeTo.forEach(el => {
+        for (let i = 0; i < this.statesToChangeTo.length; i++) {
+            const el = this.statesToChangeTo[i];
             if (el.condition()) {
                 // console.log(`unit changed from ${this.state} to ${el.state}`);
                 this.state = el.state;
             }
-        });
-
-
+        }
     }
 }

@@ -18,6 +18,9 @@ export class GameObject {
         }
     }
     kill() {
-        this.arrayRefrences.forEach(el => el.splice(el.indexOf(this), 1));
+        for (let i = 0; i < this.arrayRefrences.length; i ++) {
+            const el = this.arrayRefrences[i];
+            el.splice(el.indexOf(this), 1);
+        }
     }
 }

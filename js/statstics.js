@@ -2,6 +2,17 @@ import { ctx, teams, canvas } from "./state.js";
 import { Arrow } from "./arrow.js";
 import fps from "./fps.js";
 
+
+function getTeamLength(team) {
+    let teamCount = 0;
+    team.forEach(unit => {
+        if (unit.health > 0) {
+            teamCount ++;
+        }
+    })
+    return teamCount;
+}
+
 export default function statistics() {
     ctx.fillStyle = 'black';
     ctx.fillRect(0,0, 150, 150);
@@ -13,24 +24,27 @@ export default function statistics() {
     ctx.font = '16px Arial'; 
     ctx.fillStyle = 'white';
     ctx.fillText('FPS: ' + fps.rate(), 12, 20);
-    if (teams['red'].length > teams['blue'].length) {
+    const redTeamCount = getTeamLength(teams['red']);
+    const blueTeamCount = getTeamLength(teams['blue']);
+
+    if (redTeamCount > blueTeamCount) {
         ctx.fillStyle = 'green';
-        ctx.fillText('RED: ' + teams['red'].length, 12, 40);
+        ctx.fillText('RED: ' + redTeamCount, 12, 40);
         ctx.fillStyle = 'yellow';        
-        ctx.fillText('BLUE: ' + teams['blue'].length, 12, 60);
+        ctx.fillText('BLUE: ' + blueTeamCount, 12, 60);
     } else {
         ctx.fillStyle = 'green';
-        ctx.fillText('BLUE: ' + teams['blue'].length, 12, 40);
+        ctx.fillText('BLUE: ' + blueTeamCount, 12, 40);
         ctx.fillStyle = 'yellow';        
-        ctx.fillText('RED: ' + teams['red'].length, 12, 60);
+        ctx.fillText('RED: ' + redTeamCount, 12, 60);
     }
     ctx.fillStyle = 'white';
-    ctx.fillText('Total: ' + (teams['red'].length+teams['blue'].length), 12, 80);
+    ctx.fillText('Total: ' + (redTeamCount+blueTeamCount), 12, 80);
     ctx.fillStyle = 'white';
     ctx.fillText('Arrows: ' + (Arrow.count), 12, 100);
 
 
-    if (teams['red'].length === 0) {
+    if (redTeamCount === 0) {
         ctx.font = '50px Arial';
         ctx.lineWidth = '3px';
         ctx.fillStyle = 'blue';
@@ -39,7 +53,7 @@ export default function statistics() {
         ctx.fillText('BLUE WON', canvas.width/2, canvas.height/2);
     }
 
-    if (teams['blue'].length === 0) {
+    if (blueTeamCount === 0) {
         ctx.font = '50px Arial';
         ctx.lineWidth = '3px';
         ctx.fillStyle = 'red';

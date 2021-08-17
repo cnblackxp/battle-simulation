@@ -1,8 +1,6 @@
 import { Unit } from './unit.js';
 import { Halberdier } from './halberdier.js';
 
-console.log('hero');
-
 export class Hero extends Unit {
     constructor(x = 0, y = 0, team) {
         super(x, y, team);

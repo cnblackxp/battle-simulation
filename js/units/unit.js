@@ -7,7 +7,7 @@ import { StateMachine } from '../state-machine.js';
 
 export class Unit extends StateMachine {
     constructor(x = 0, y = 0, team) {
-        super(x, y, team);
+        super();
         this.x = x;
         this.y = y;
         this.team = team;
@@ -18,23 +18,22 @@ export class Unit extends StateMachine {
         this.speed = 1;
         this.rotation = 0;
 
+        this.color = this.team;
+
         this.size = Unit.size;
 
         this.damageBouns = [];
 
 
-        this.setState('idle', () => {
-            this.findTarget();
-        });
-        this.setState('move', () => {
-            this.move();
-        });
-        this.setState('attack', () => {
-            this.attack();
-        })
-        this.setStateCondition('move', () => this.target !== undefined, ['idle']);
-        this.setStateCondition('attack', () => this.attackCondition(), ['move', 'idle']);
-        this.setStateCondition('idle', () => this.target.health <= 0, ['move','attack']);
+        this.setState('idle', this.findTarget);
+        this.setState('move', this.move);
+        this.setState('attack', this.attack)
+        // this.setState('dead', this.dead)
+
+        this.setStateCondition('move', this.moveCondition, ['idle']);
+        this.setStateCondition('attack', this.attackCondition, ['move', 'idle']);
+        this.setStateCondition('idle', this.idleCondition, ['move','attack']);
+        // this.setStateCondition('dead', this.deadCondition, ['idle', 'move', 'attack']);
 
 
 
@@ -44,7 +43,7 @@ export class Unit extends StateMachine {
     //------------------
     //------------------
     //------------------state functions
-    findTarget() {
+    findTarget = () => {
         const enemyTeam = this.team === Teams.RED ? Teams.BLUE : Teams.RED;
         if (teams[enemyTeam].length <= 0)
             return this.target = undefined;
@@ -63,25 +62,29 @@ export class Unit extends StateMachine {
 
         this.target = closestEnemy.enemy;
     }
-    move() {
-        this.rotation = angleBetween(this, this.target);
-        this.x += Math.cos(this.rotation) * this.speed;
-        this.y += Math.sin(this.rotation) * this.speed;
-
+    checkCollision = () => {
         //collision check
         for (let team in teams) {
-            teams[team].forEach(unit => {
-                if (unit !== this) {
+            for (let i = 0; i < teams[team].length; i++) {
+                const unit = teams[team][i];
+                if (unit !== this && unit.health > 0) {
                     if (dist(this, unit) < this.size/2 + unit.size/2) {
                         const rot = angleBetween(this, unit);
                         this.x -= Math.cos(rot) * this.speed;
                         this.y -= Math.sin(rot) * this.speed;
                     }
                 }
-            })
+            }
         }
     }
-    attack() {
+    move = () => {
+        this.rotation = angleBetween(this, this.target);
+        this.x += Math.cos(this.rotation) * this.speed;
+        this.y += Math.sin(this.rotation) * this.speed;
+
+        this.checkCollision();
+    }
+    attack = () => {
         this.target.health -= this.damage;
 
         if (this.damageBouns.length > 0) {
@@ -92,10 +95,14 @@ export class Unit extends StateMachine {
             })
         }
     }
+    // dead = () => {
+    //     this.color = 'gray';
+    // }
 
-    attackCondition(_dist = 14) {
-        return this.target && dist(this, this.target) < _dist;
-    }
+    attackCondition = (_dist = 14) => this.target && dist(this, this.target) < _dist;
+    idleCondition = () => this.target.health <= 0;
+    moveCondition = () => this.target !== undefined;
+    deadCondition = () => this.health <= 0;
     //------------------state functions
     //------------------
     //------------------
@@ -105,10 +112,9 @@ export class Unit extends StateMachine {
         if (this.health <= 0) {
             this.kill();
         }
-
     }
     draw() {
-        ctx.fillStyle = this.team;
+        ctx.fillStyle = this.color;
         ctx.fillRect(this.x, this.y, this.size, this.size);
     }
 
